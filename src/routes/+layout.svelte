@@ -26,6 +26,15 @@
 		} catch {
 			setTimeout(() => { showDisclaimer = true; }, 800);
 		}
+
+		// Force video play on mobile — if blocked, hide video to show gradient fallback
+		const vid = document.querySelector('.video-bg video') as HTMLVideoElement;
+		if (vid) {
+			vid.play().catch(() => {
+				vid.style.display = 'none';
+			});
+		}
+
 		const { gsap } = await import('gsap');
 		const { ScrollTrigger } = await import('gsap/ScrollTrigger');
 		gsap.registerPlugin(ScrollTrigger);
@@ -62,6 +71,7 @@
 	<!-- Fullscreen video background -->
 	{#if !hideVideoBg}
 		<div class="video-bg" aria-hidden="true">
+			<div class="video-fallback"></div>
 			<video autoplay loop muted playsinline>
 				<source src="/heroVideo.mp4" type="video/mp4" />
 			</video>
@@ -155,9 +165,28 @@
 		height: 100%;
 		z-index: 0;
 		overflow: hidden;
+		background: #0a0a0f;
+	}
+
+	.video-fallback {
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(ellipse at 20% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+			radial-gradient(ellipse at 80% 20%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+			radial-gradient(ellipse at 60% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+			linear-gradient(160deg, #0a0a0f 0%, #0d0d1a 30%, #110d1f 60%, #0a0a0f 100%);
+		animation: fallbackShift 12s ease-in-out infinite alternate;
+	}
+
+	@keyframes fallbackShift {
+		0% { background-position: 0% 0%, 100% 0%, 50% 100%, 0% 0%; }
+		100% { background-position: 30% 20%, 70% 40%, 40% 60%, 0% 0%; }
 	}
 
 	.video-bg video {
+		position: relative;
+		z-index: 1;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
@@ -166,6 +195,7 @@
 	.video-overlay {
 		position: absolute;
 		inset: 0;
+		z-index: 2;
 		background: radial-gradient(ellipse at center, rgba(10, 10, 15, 0.35) 0%, rgba(10, 10, 15, 0.8) 100%);
 	}
 
