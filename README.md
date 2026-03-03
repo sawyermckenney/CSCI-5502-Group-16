@@ -98,3 +98,14 @@ npm run preview
 ## AI Attribution
 
 CSS styles in this project were generated and/or assisted by AI (Claude, Anthropic). Each `<style>` block in the Svelte components contains a comment noting this. The site layout, structure, and page scaffolding were also created with AI assistance.
+
+
+## Full Dataset Required
+
+The full dataset (Base.csv, 204MB) exceeds GitHub’s file size limit and is not stored in this repository.
+
+Download it here:
+<(https://drive.google.com/file/d/1jlhiVgPFWi_vCnd_wkET23H0fMppyLpe/view?usp=sharing)>
+
+Place the file at:
+data/raw/feedzai/Base.csv
