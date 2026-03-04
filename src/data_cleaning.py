@@ -61,10 +61,11 @@ preprocessor = ColumnTransformer(
 
 
 cleaned = preprocessor.fit_transform(df)
-
+feature_names = preprocessor.get_feature_names_out()
 #Converting cleaned data into dataframe
 cleaned_df = pd.DataFrame(
-    cleaned.toarray() if hasattr(cleaned, "toarray") else cleaned
+    cleaned.toarray() if hasattr(cleaned, "toarray") else cleaned,
+    columns=feature_names
 )
 
 #Saving cleaned dataset
