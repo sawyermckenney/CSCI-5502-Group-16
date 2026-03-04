@@ -10,7 +10,7 @@ from sklearn.impute import SimpleImputer
 import scipy.stats as stats
 
 
-RAW_PATH = "data/raw/Base_preview_100.csv"
+RAW_PATH = "data/raw/feedzai/Base_preview_100.csv"
 PROCESSED_DIR = "data/processed"
 FIG_DIR = "figures"
 
@@ -35,7 +35,7 @@ df[sentinel_cols] = df[sentinel_cols].replace(-1, np.nan)
 
 #Categorizing column types
 numeric_cols = df.select_dtypes(include=['float64', 'int64']).columns.tolist()
-categorical_cols = df.select_dtypes(include=['object']).columns.tolist()
+categorical_cols = df.select_dtypes(include=['object', 'string']).columns.tolist()
 
 #Eliminating fraud target from numeric list
 if "fraud_bool" in numeric_cols:
@@ -82,12 +82,12 @@ plt.title("Fraud vs Non-Fraud Distribution")
 plt.savefig(f"{FIG_DIR}/fraud_distribution.png")
 plt.close()
 
-#Correlation heatmap
-plt.figure(figsize=(14,10))
-sns.heatmap(df.corr(), cmap="coolwarm")
-plt.title("Correlation Heatmap")
-plt.savefig(f"{FIG_DIR}/correlation_heatmap.png")
-plt.close()
+# #Correlation heatmap
+# plt.figure(figsize=(14,10))
+# sns.heatmap(df.corr(), cmap="coolwarm")
+# plt.title("Correlation Heatmap")
+# plt.savefig(f"{FIG_DIR}/correlation_heatmap.png")
+# plt.close()
 
 #Payment type frequency
 plt.figure(figsize=(8,4))
