@@ -8,6 +8,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 import scipy.stats as stats
+from google.cloud import bigquery
 
 
 RAW_PATH = "data/raw/feedzai/Base_preview_100.csv"
@@ -18,7 +19,13 @@ os.makedirs(PROCESSED_DIR, exist_ok=True)
 os.makedirs(FIG_DIR, exist_ok=True)
 
 #Loading dataset
-df = pd.read_csv(RAW_PATH)
+#df = pd.read_csv(RAW_PATH)
+#client = bigquery.Client(project="csci-4022")
+#df = client.query("SELECT * FROM `csci-4022.CSCI.fraud_data`").to_dataframe()
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'fraud-detection-key.json'
+client = bigquery.Client(project="csci-4022")
+df = client.query("SELECT * FROM `csci-4022.CSCI.fraud_data`").to_dataframe()
 
 #Saving before snapshot
 df.head(10).to_csv(f"{PROCESSED_DIR}/before_snapshot.csv", index=False)
@@ -78,8 +85,10 @@ cleaned_df.head(10).to_csv(f"{PROCESSED_DIR}/after_snapshot.csv", index=False)
 
 #Fraud distribution
 plt.figure(figsize=(6,4))
-sns.countplot(x='fraud_bool', data=df)
+ax = sns.countplot(x='fraud_bool', data=df)
 plt.title("Fraud vs Non-Fraud Distribution")
+for container in ax.containers:
+    ax.bar_label(container)
 plt.savefig(f"{FIG_DIR}/fraud_distribution.png")
 plt.close()
 
@@ -92,8 +101,10 @@ plt.close()
 
 #Payment type frequency
 plt.figure(figsize=(8,4))
-sns.countplot(y='payment_type', data=df)
+ax = sns.countplot(y='payment_type', data=df)
 plt.title("Payment Type Frequency")
+for container in ax.containers:
+    ax.bar_label(container)
 plt.savefig(f"{FIG_DIR}/payment_type_frequency.png")
 plt.close()
 

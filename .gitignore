@@ -25,4 +25,4 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 data/raw/feedzai/*.csv
-!data/raw/feedzai/Base_preview_100.csv
+!data/raw/feedzai/Base_preview_100.csvfraud-detection-key.json
