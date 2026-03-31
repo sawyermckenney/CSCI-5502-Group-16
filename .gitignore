@@ -5,8 +5,8 @@ node_modules
 .vercel
 .netlify
 .wrangler
-/.svelte-kit
-/build
+.svelte-kit
+build
 
 # OS
 .DS_Store
@@ -24,5 +24,12 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-data/raw/feedzai/*.csv
-!data/raw/feedzai/Base_preview_100.csvfraud-detection-key.json
+analysis/data/raw/feedzai/*.csv
+!analysis/data/raw/feedzai/Base_preview_100.csv
+
+# Secrets
+fraud-detection-key.json
+
+# Google Cloud SDK
+google-cloud-sdk/
+google-cloud-sdk-*.tar.gz
