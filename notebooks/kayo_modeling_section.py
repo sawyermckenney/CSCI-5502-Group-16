@@ -122,11 +122,19 @@ print("\nCluster sizes:\n", df_km["cluster"].value_counts())
 # APRIORI
 # =========================
 
-df_ap = df.sample(n=20000, random_state=42)
+df_ap = df.sample(n=5000, random_state=42)
 
-df_ap["income_bin"] = pd.qcut(df_ap["income"], 3, labels=["low_income", "mid_income", "high_income"])
-df_ap["credit_bin"] = pd.qcut(df_ap["credit_risk_score"], 3, labels=["low_risk", "mid_risk", "high_risk"])
-df_ap["address_bin"] = pd.qcut(df_ap["current_address_months_count"], 3, labels=["short_addr", "mid_addr", "long_addr"])
+df_ap["income_bin"] = pd.qcut(
+    df_ap["income"],
+    3,
+    labels=["low_income", "mid_income", "high_income"]
+)
+
+df_ap["credit_bin"] = pd.qcut(
+    df_ap["credit_risk_score"],
+    3,
+    labels=["low_risk", "mid_risk", "high_risk"]
+)
 
 transactions = []
 
@@ -134,22 +142,20 @@ for _, row in df_ap.iterrows():
     transactions.append([
         str(row["income_bin"]),
         str(row["credit_bin"]),
-        str(row["address_bin"]),
-        "phone_valid_" + str(row["phone_home_valid"]),
-        "has_cards_" + str(row["has_other_cards"]),
         "fraud_" + str(row["fraud_bool"])
     ])
 
 rules = apriori(
     transactions,
-    min_support=0.01,
-    min_confidence=0.2,
-    min_lift=1.5,
-    max_length=3
+    min_support=0.005,
+    min_confidence=0.1,
+    min_lift=1.0,
+    max_length=2
 )
 
 print("\n=== APRIORI (FRAUD RULES ONLY) ===")
 
+count = 0
 for rule in rules:
     for stat in rule.ordered_statistics:
         if "fraud_1" in stat.items_add:
@@ -159,8 +165,19 @@ for rule in rules:
             lift = stat.lift
             support = rule.support
 
-            print(f"{base} -> {add} | support={support:.3f}, confidence={conf:.3f}, lift={lift:.3f}")
+            print(
+                f"{base} -> {add} | support={support:.3f}, "
+                f"confidence={conf:.3f}, lift={lift:.3f}"
+            )
+            count += 1
 
+        if count >= 5:
+            break
+    if count >= 5:
+        break
+
+if count == 0:
+    print("No fraud-related rules found under the current thresholds.")
 # =========================
 # APRIORI NOTES
 # =========================
@@ -175,3 +192,4 @@ for rule in rules:
 # KMeans = shows natural groupings of risk
 # Apriori = shows behavioral combinations
 # Together → full understanding of fraud behavior
+
