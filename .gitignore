@@ -26,4 +26,9 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 data/raw/feedzai/*.csv
 !data/raw/feedzai/Base_preview_100.csvfraud-detection-key.json
+<<<<<<< HEAD
+data/raw/feedzai/Base.csv
+figures/
+=======
 data/processed/cleaned_feedzai_full.csv
+>>>>>>> 9168c199135eeb5d2ff94cfe50166c5c72347cf0
