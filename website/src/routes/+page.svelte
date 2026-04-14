@@ -6,12 +6,24 @@
 		const { ScrollTrigger } = await import('gsap/ScrollTrigger');
 		gsap.registerPlugin(ScrollTrigger);
 
-		// Hero entrance
+		// Hero entrance — left side text
 		const tl = gsap.timeline();
 		tl.from('.hero-label', { opacity: 0, y: 20, duration: 0.6, delay: 0.2 })
 			.from('.hero h1', { opacity: 0, y: 40, duration: 0.8 }, '-=0.3')
 			.from('.hero-desc', { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
 			.from('.hero-line', { scaleX: 0, duration: 0.8, ease: 'power2.out' }, '-=0.3');
+
+		// Mosaic entrance — blocks stagger in from the right
+		gsap.from('.mosaic-grid .block', {
+			x: 80, opacity: 0, duration: 0.5, stagger: 0.04, ease: 'power2.out', delay: 0.4
+		});
+
+		// Gentle parallax on mosaic during scroll
+		gsap.to('.hero-mosaic', {
+			y: -60,
+			ease: 'none',
+			scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+		});
 
 		// Stats counter animation
 		document.querySelectorAll('.stat-number').forEach((el) => {
@@ -43,12 +55,48 @@
 
 <!-- Hero -->
 <section class="hero">
-	<span class="hero-label">CSCI 5502 &middot; University of Colorado Boulder</span>
-	<h1>Data Mining<br /><span class="gradient-text">Group 16</span></h1>
-	<p class="hero-desc">
-		Uncovering patterns. Building models. Extracting knowledge from data.
-	</p>
-	<div class="hero-line"></div>
+	<div class="hero-content">
+		<span class="hero-label">CSCI 5502 &middot; University of Colorado Boulder</span>
+		<h1>Data Mining<br /><span class="gradient-text">Group 16</span></h1>
+		<p class="hero-desc">
+			Uncovering patterns. Building models. Extracting knowledge from data.
+		</p>
+		<div class="hero-line"></div>
+	</div>
+
+	<div class="hero-mosaic" aria-hidden="true">
+		<div class="mosaic-grid">
+			<!-- Row 1 -->
+			<div class="block" style="grid-column: 1 / 3; grid-row: 1; background: linear-gradient(135deg, #ec4899, #f472b6); opacity: 0.75;"></div>
+			<div class="block" style="grid-column: 3; grid-row: 1 / 3; background: #a855f7; opacity: 0.5;"></div>
+			<div class="block" style="grid-column: 4 / 6; grid-row: 1; background: linear-gradient(135deg, #7c3aed, #a855f7); opacity: 0.4;"></div>
+			<div class="block" style="grid-column: 6; grid-row: 1 / 4; background: linear-gradient(180deg, #ec4899, #a855f7); opacity: 0.55;"></div>
+			<div class="block" style="grid-column: 7; grid-row: 1 / 3; background: #f472b6; opacity: 0.35;"></div>
+			<!-- Row 2 -->
+			<div class="block" style="grid-column: 1; grid-row: 2 / 4; background: #7c3aed; opacity: 0.5;"></div>
+			<div class="block" style="grid-column: 2; grid-row: 2; background: linear-gradient(135deg, #f97316, #ec4899); opacity: 0.65;"></div>
+			<div class="block" style="grid-column: 4; grid-row: 2 / 4; background: #ec4899; opacity: 0.35;"></div>
+			<div class="block" style="grid-column: 5; grid-row: 2; background: linear-gradient(135deg, #a855f7, #7c3aed); opacity: 0.55;"></div>
+			<div class="block" style="grid-column: 7; grid-row: 3 / 5; background: linear-gradient(135deg, #ec4899, #f97316); opacity: 0.45;"></div>
+			<!-- Row 3 -->
+			<div class="block" style="grid-column: 2 / 4; grid-row: 3; background: linear-gradient(90deg, #a855f7, #ec4899); opacity: 0.6;"></div>
+			<div class="block" style="grid-column: 5; grid-row: 3 / 5; background: #7c3aed; opacity: 0.4;"></div>
+			<!-- Row 4 -->
+			<div class="block" style="grid-column: 1; grid-row: 4; background: #f472b6; opacity: 0.45;"></div>
+			<div class="block" style="grid-column: 2 / 4; grid-row: 4 / 6; background: linear-gradient(180deg, #7c3aed, #a855f7); opacity: 0.55;"></div>
+			<div class="block" style="grid-column: 4; grid-row: 4; background: linear-gradient(135deg, #ec4899, #a855f7); opacity: 0.5;"></div>
+			<div class="block" style="grid-column: 6; grid-row: 4 / 6; background: #a855f7; opacity: 0.4;"></div>
+			<!-- Row 5 -->
+			<div class="block" style="grid-column: 1; grid-row: 5 / 7; background: linear-gradient(135deg, #a855f7, #7c3aed); opacity: 0.5;"></div>
+			<div class="block" style="grid-column: 4 / 6; grid-row: 5; background: linear-gradient(90deg, #f97316, #ec4899); opacity: 0.6;"></div>
+			<div class="block" style="grid-column: 7; grid-row: 5; background: #ec4899; opacity: 0.35;"></div>
+			<!-- Row 6 -->
+			<div class="block" style="grid-column: 2; grid-row: 6; background: linear-gradient(135deg, #ec4899, #f472b6); opacity: 0.45;"></div>
+			<div class="block" style="grid-column: 3 / 5; grid-row: 6; background: #7c3aed; opacity: 0.55;"></div>
+			<div class="block" style="grid-column: 5 / 7; grid-row: 6; background: linear-gradient(135deg, #a855f7, #ec4899); opacity: 0.5;"></div>
+			<div class="block" style="grid-column: 7; grid-row: 6; background: #f472b6; opacity: 0.3;"></div>
+		</div>
+	</div>
 </section>
 
 <!-- Content panel that scrolls over the video -->
@@ -266,15 +314,76 @@
 <style>
 	/* Styles generated/assisted by AI (Claude, Anthropic) */
 
-	/* === Hero === */
+	/* === Hero — split layout === */
 	.hero {
-		text-align: center;
 		position: relative;
 		min-height: 100vh;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		overflow: hidden;
+		padding: 0 4rem;
+		gap: 3rem;
+	}
+
+	.hero-content {
+		flex: 1;
+		max-width: 560px;
+		text-align: left;
+	}
+
+	/* === Mosaic (right half) === */
+	.hero-mosaic {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		max-width: 520px;
+	}
+
+	.mosaic-grid {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		grid-template-rows: repeat(6, 1fr);
+		gap: 6px;
+		width: 100%;
+		aspect-ratio: 7 / 6;
+	}
+
+	.mosaic-grid .block {
+		border-radius: 5px;
+		animation: blockPulse 4s ease-in-out infinite alternate;
+		min-height: 0;
+	}
+
+	/* stagger the pulse per block */
+	.mosaic-grid .block:nth-child(1)  { animation-delay: 0s; }
+	.mosaic-grid .block:nth-child(2)  { animation-delay: 0.4s; }
+	.mosaic-grid .block:nth-child(3)  { animation-delay: 0.8s; }
+	.mosaic-grid .block:nth-child(4)  { animation-delay: 1.2s; }
+	.mosaic-grid .block:nth-child(5)  { animation-delay: 0.2s; }
+	.mosaic-grid .block:nth-child(6)  { animation-delay: 0.6s; }
+	.mosaic-grid .block:nth-child(7)  { animation-delay: 1.0s; }
+	.mosaic-grid .block:nth-child(8)  { animation-delay: 1.4s; }
+	.mosaic-grid .block:nth-child(9)  { animation-delay: 0.3s; }
+	.mosaic-grid .block:nth-child(10) { animation-delay: 0.7s; }
+	.mosaic-grid .block:nth-child(11) { animation-delay: 1.1s; }
+	.mosaic-grid .block:nth-child(12) { animation-delay: 1.5s; }
+	.mosaic-grid .block:nth-child(13) { animation-delay: 0.1s; }
+	.mosaic-grid .block:nth-child(14) { animation-delay: 0.5s; }
+	.mosaic-grid .block:nth-child(15) { animation-delay: 0.9s; }
+	.mosaic-grid .block:nth-child(16) { animation-delay: 1.3s; }
+	.mosaic-grid .block:nth-child(17) { animation-delay: 0.15s; }
+	.mosaic-grid .block:nth-child(18) { animation-delay: 0.55s; }
+	.mosaic-grid .block:nth-child(19) { animation-delay: 0.95s; }
+	.mosaic-grid .block:nth-child(20) { animation-delay: 1.35s; }
+	.mosaic-grid .block:nth-child(21) { animation-delay: 0.45s; }
+	.mosaic-grid .block:nth-child(22) { animation-delay: 0.85s; }
+
+	@keyframes blockPulse {
+		0%   { transform: scale(1); filter: brightness(1); }
+		50%  { transform: scale(1.04); filter: brightness(1.25); }
+		100% { transform: scale(1); filter: brightness(1); }
 	}
 
 	/* === Content Panel (scrolls over video) === */
@@ -282,6 +391,24 @@
 		position: relative;
 		z-index: 2;
 		background: #0a0a0f;
+	}
+
+	/* Subtle dot grid overlay on content panel */
+	.content-panel::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(rgba(168, 85, 247, 0.12) 1px, transparent 1px);
+		background-size: 32px 32px;
+		pointer-events: none;
+		z-index: 0;
+		mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 5%, rgba(0,0,0,0.5) 95%, transparent 100%);
+		-webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 5%, rgba(0,0,0,0.5) 95%, transparent 100%);
+	}
+
+	.panel-inner {
+		position: relative;
+		z-index: 1;
 	}
 
 	.panel-edge {
@@ -331,7 +458,7 @@
 		font-size: 1.15rem;
 		color: rgba(255, 255, 255, 0.6);
 		max-width: 480px;
-		margin: 0 auto 3rem;
+		margin: 0 0 3rem;
 		font-weight: 400;
 	}
 
@@ -339,8 +466,8 @@
 		width: 80px;
 		height: 2px;
 		background: linear-gradient(90deg, #ec4899, #a855f7);
-		margin: 0 auto;
-		transform-origin: center;
+		margin: 0;
+		transform-origin: left;
 	}
 
 	/* === Stats === */
@@ -380,12 +507,43 @@
 	.intro-section {
 		margin-bottom: 4rem;
 		padding-bottom: 4rem;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+		border-bottom: none;
+		position: relative;
+	}
+
+	/* Geometric divider between sections */
+	.intro-section::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		width: 200px;
+		height: 4px;
+		background:
+			linear-gradient(90deg,
+				transparent 0%,
+				rgba(168, 85, 247, 0.3) 15%,
+				rgba(236, 72, 153, 0.5) 35%,
+				rgba(236, 72, 153, 0.5) 45%,
+				transparent 46%,
+				transparent 54%,
+				rgba(168, 85, 247, 0.5) 55%,
+				rgba(168, 85, 247, 0.5) 65%,
+				rgba(236, 72, 153, 0.3) 85%,
+				transparent 100%
+			);
+		border-radius: 2px;
 	}
 
 	.intro-section:last-child {
 		border-bottom: none;
 		margin-bottom: 2rem;
+	}
+
+	.intro-section:last-child::after {
+		display: none;
 	}
 
 	.section-header {
@@ -494,10 +652,41 @@
 	}
 
 	/* === Mobile Responsive === */
+	@media (max-width: 1100px) {
+		.hero {
+			padding: 0 2rem;
+			gap: 2rem;
+		}
+		.hero-mosaic {
+			max-width: 360px;
+		}
+	}
+
 	@media (max-width: 768px) {
 		.hero {
-			min-height: 80vh;
-			padding: 0 1rem;
+			flex-direction: column;
+			min-height: auto;
+			padding: 8rem 1.5rem 3rem;
+			gap: 2.5rem;
+		}
+
+		.hero-content {
+			text-align: center;
+			max-width: 100%;
+		}
+
+		.hero-desc {
+			margin: 0 auto 2rem;
+		}
+
+		.hero-line {
+			margin: 0 auto;
+			transform-origin: center;
+		}
+
+		.hero-mosaic {
+			max-width: 320px;
+			width: 100%;
 		}
 
 		.hero-desc {

@@ -5,7 +5,7 @@
 
 	let { children } = $props();
 	const hideVideoBg = $derived(
-		['/team', '/proposal', '/exploration'].some((path) => page.url.pathname.startsWith(path))
+		['/team', '/proposal', '/exploration', '/models'].some((path) => page.url.pathname.startsWith(path))
 	);
 
 	let showDisclaimer = $state(false);
@@ -89,6 +89,7 @@
 				<a href="/" class="nav-link" class:active={page.url.pathname === '/'}>Introduction</a>
 				<a href="/proposal" class="nav-link" class:active={page.url.pathname.startsWith('/proposal')}>Proposal</a>
 				<a href="/exploration" class="nav-link" class:active={page.url.pathname.startsWith('/exploration')}>Exploration</a>
+				<a href="/models" class="nav-link" class:active={page.url.pathname.startsWith('/models')}>Models</a>
 				<a href="/team" class="nav-link" class:active={page.url.pathname.startsWith('/team')}>Team</a>
 			</div>
 		</div>
