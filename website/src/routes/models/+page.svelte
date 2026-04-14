@@ -241,7 +241,7 @@
 	onMount(async () => {
 		const { gsap } = await import('gsap');
 		gsap.from('.page-header h1', { opacity: 0, y: 40, duration: 0.8, delay: 0.2 });
-		gsap.from('.page-header p', { opacity: 0, y: 20, duration: 0.6, delay: 0.35 });
+		gsap.from('.doc-meta', { opacity: 0, y: 20, duration: 0.6, delay: 0.35 });
 		gsap.from('.carousel-scene', { opacity: 0, scale: 0.9, duration: 0.8, delay: 0.5, ease: 'power2.out' });
 		gsap.from('.scroll-controls', { opacity: 0, y: 20, duration: 0.5, delay: 0.9 });
 	});
@@ -250,11 +250,14 @@
 <svelte:window onkeydown={handleKeydown} />
 
 <div class="models-page">
-	<div class="page-header">
-		<span class="header-label">Milestone 3</span>
+	<section class="page-header">
 		<h1>Model <span class="gradient-text">Implementation</span></h1>
-		<p>Four distinct model combinations leveraging supervised classification, unsupervised clustering, ensemble methods, and association rule mining to detect fraud in the BAF dataset.</p>
-	</div>
+		<div class="doc-meta">
+			<span class="meta-pill">CSCI 5502 — Data Mining</span>
+			<span class="meta-pill">Group 16</span>
+			<span class="meta-pill">Milestone 3</span>
+		</div>
+	</section>
 
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
@@ -365,41 +368,43 @@
 	/* === Header === */
 	.page-header {
 		text-align: center;
-		margin-bottom: 2rem;
-		padding: 0 1rem;
+		padding: 8rem 0 2rem;
 	}
 
-	.header-label {
-		display: inline-block;
-		font-size: 0.75rem;
-		font-weight: 600;
-		letter-spacing: 0.15em;
-		text-transform: uppercase;
-		color: #7c3aed;
-		margin-bottom: 0.75rem;
-	}
-
-	.page-header h1 {
+	h1 {
 		font-size: clamp(2rem, 5vw, 3.5rem);
 		font-weight: 800;
-		color: #1a0a2e;
-		line-height: 1.15;
+		color: #1a1a2e;
+		letter-spacing: -0.03em;
 		margin-bottom: 1rem;
 	}
 
 	.gradient-text {
-		background: linear-gradient(90deg, #ec4899, #a855f7);
+		background: linear-gradient(90deg, #ec4899 20%, #ff4665 50%, #7c3aed 80%);
 		background-clip: text;
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 	}
 
-	.page-header p {
-		font-size: 1.05rem;
-		color: #6b5585;
-		max-width: 640px;
-		margin: 0 auto;
-		line-height: 1.7;
+	.doc-meta {
+		display: flex;
+		justify-content: center;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+		margin-bottom: 2rem;
+	}
+
+	.meta-pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-size: 0.8rem;
+		font-weight: 500;
+		color: #5b4578;
+		background: rgba(255, 255, 255, 0.85);
+		border: 1px solid rgba(236, 72, 153, 0.15);
+		padding: 0.4rem 1rem;
+		border-radius: 100px;
 	}
 
 	/* === 3D Carousel === */
